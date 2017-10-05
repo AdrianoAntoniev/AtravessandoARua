@@ -89,6 +89,7 @@
 	    	var dilminha = new Sprite("dilminha.png", 320, 400);
 	    	dilminha.passou = function() {
 	    		if(this.y <= 0) {
+	    			this.y = canvas.height - this.altura;
 	    			return true;
 	    		}
 	    		return false;
