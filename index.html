@@ -49,6 +49,9 @@
 
 	    		this.desenhaImagem = function() {
 	    			contexto.drawImage(this.imagem, this.x, this.y, this.largura, this.altura);
+	    			contexto.strokeStyle="darkred";
+				    contexto.lineWidth = 0.2;
+    				contexto.strokeRect(this.x, this.y, this.largura, this.altura);
 	    		}
 
 	    		this.move = function(dx, dy) {
