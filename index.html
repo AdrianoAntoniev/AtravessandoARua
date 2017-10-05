@@ -10,31 +10,96 @@
      style="border: solid 1px black; margin: 0px auto; display: block;"></canvas>
 
     	<script type="text/javascript">
-     		var canvas = document.getElementById("canvas");
+    		var canvas = document.getElementById("canvas");
      		var contexto = canvas.getContext("2d");
 
-     		contexto.fillStyle = "dimgray";
-     		contexto.fillRect(0,0,canvas.width,canvas.height);
+    		function desenhaFundo() {
+    			contexto.fillStyle = "dimgray";
+	     		contexto.fillRect(0,0,canvas.width,canvas.height);
 
-			contexto.fillStyle = "lightgray";
-     		contexto.fillRect(0,0,canvas.width,80);     		
+				contexto.fillStyle = "lightgray";
+	     		contexto.fillRect(0,0,canvas.width,80);     		
 
-     		contexto.fillStyle = "lightgray";
-     		contexto.fillRect(0,380,canvas.width,100);     		
+	     		contexto.fillStyle = "lightgray";
+	     		contexto.fillRect(0,380,canvas.width,100);     		
 
-     		contexto.fillStyle = "white";
-     		for(var i=0; i<25; i++) {
-     			contexto.fillRect(i*30-5, 185, 20, 4);
-     			contexto.fillRect(i*30-5, 280, 20, 4);
-     		}
+	     		contexto.fillStyle = "white";
+	     		for(var i=0; i<25; i++) {
+	     			contexto.fillRect(i*30-5, 185, 20, 4);
+	     			contexto.fillRect(i*30-5, 280, 20, 4);
+	     		}	
+	    	}     		     			   
 
-     		var dilminha = new Image();
-     		dilminha.src = "dilminha.png";     		
-     		var x = 320;
-     		var y = 400;
-     		dilminha.onload = function() {
-     			contexto.drawImage(dilminha, x, y, dilminha.width, dilminha.height);
- 			} 			
+
+	    	function Sprite(caminho, xInicial, yInicial) {
+	    		this.x = xInicial;
+	    		this.y = yInicial;
+
+	    		this.imagem = new Image();
+	    		this.imagem.src = caminho;	    		
+
+	    		var that = this;
+	    		this.imagem.onload = function() {
+	    			that.largura = that.imagem.width;
+	    			that.altura = that.imagem.height;
+	    			that.desenhaImagem();
+	    		}
+
+	    		this.desenhaImagem = function() {
+	    			contexto.drawImage(this.imagem, this.x, this.y, this.largura, this.altura);
+	    		}
+
+	    		this.move = function(dx, dy) {
+	    			this.x += dx;
+	    			this.y += dy;
+
+	    			if(this.x > canvas.width) {
+	    				this.x = -this.largura;
+	    			} else if(this.x < -this.largura)  {
+	    				this.x = canvas.width;
+	    			}
+	    			if(this.y > canvas.height - this.altura + 5) {
+	    				this.y -= dy;
+	    			} else if(this.y <= -5) {
+	    				this.y = canvas.height - this.altura;
+	    			}
+	    		}
+
+	    	}
+
+	    	var dilminha = new Sprite("dilminha.png", 320, 400);
+			var amarelo = new Sprite("carrinho-amarelo.png", -10, 300);     		
+     		var azul = new Sprite("carrinho-azul.png", 560, 200); 			
+			var policia = new Sprite("carrinho-policia.png", 10, 100);			
+			
+ 			document.onkeydown = function(event) {
+ 				switch(event.which) {
+     			    case 37: 
+     			    	dilminha.move(-10, 0);
+        				break;
+        		    case 38: 
+            			dilminha.move(0, -10);
+        				break;
+        			case 39: 
+            			dilminha.move(10, 0);
+        				break;
+        			case 40: 
+            			dilminha.move(0, 10);
+        				break;
+    			}
+ 			}
+
+ 			setInterval(function(){
+				desenhaFundo();
+				dilminha.desenhaImagem();
+				amarelo.desenhaImagem();				
+				azul.desenhaImagem();
+				policia.desenhaImagem();
+				
+				amarelo.move(7, 0);
+				azul.move(-5, 0);
+				policia.move(10, 0);
+			},50);
 
      	</script>
   </body>
