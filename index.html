@@ -28,6 +28,14 @@
      			contexto.fillRect(i*30-5, 280, 20, 4);
      		}
 
+     		var dilminha = new Image();
+     		dilminha.src = "dilminha.png";     		
+     		var x = 320;
+     		var y = 400;
+     		dilminha.onload = function() {
+     			contexto.drawImage(dilminha, x, y, dilminha.width, dilminha.height);
+ 			} 			
+
      	</script>
   </body>
 </html>
