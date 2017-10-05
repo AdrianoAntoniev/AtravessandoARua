@@ -10,6 +10,8 @@
      style="border: solid 1px black; margin: 0px auto; display: block;"></canvas>
 
     	<script type="text/javascript">
+    		var gameover = false;
+
     		var canvas = document.getElementById("canvas");
      		var contexto = canvas.getContext("2d");
 
@@ -65,6 +67,13 @@
 	    			}
 	    		}
 
+	    		this.colidiu = function(outro) {
+	    			var colidiuNoXTopo = outro.x >= this.x && outro.x <= (this.x + this.largura);
+			        var colidiuNoYTopo = outro.y >= this.y && outro.y <= (this.y + this.altura);
+        			var colidiuNoXBase = (outro.x + outro.largura) >= this.x && (outro.x + + outro.largura) <= (this.x + this.largura);
+        			var colidiuNoYBase = (outro.y + outro.altura) >= this.y && (outro.y + outro.altura) <= (this.y + this.altura);
+        			return (colidiuNoXTopo && colidiuNoYTopo) || (colidiuNoXBase && colidiuNoYBase);
+	    		}
 	    	}
 
 	    	var dilminha = new Sprite("dilminha.png", 320, 400);
@@ -73,6 +82,10 @@
 			var policia = new Sprite("carrinho-policia.png", 10, 100);			
 			
  			document.onkeydown = function(event) {
+ 				if(gameover) {
+ 					return;
+ 				}
+
  				switch(event.which) {
      			    case 37: 
      			    	dilminha.move(-10, 0);
@@ -96,9 +109,20 @@
 				azul.desenhaImagem();
 				policia.desenhaImagem();
 				
+				if(gameover) {
+					contexto.fillStyle = "red";
+					contexto.font = "Bold 80px Sans";
+					contexto.fillText("GAME OVER!", canvas.width/16, canvas.height/2+20);
+					return;
+				}
+
 				amarelo.move(7, 0);
 				azul.move(-5, 0);
 				policia.move(10, 0);
+
+				if(amarelo.colidiu(dilminha) || azul.colidiu(dilminha) || policia.colidiu(dilminha)) {
+					gameover = true;
+				}
 			},50);
 
      	</script>
