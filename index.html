@@ -12,6 +12,13 @@
     	<script type="text/javascript">
     		var gameover = false;
 
+    		var pontos = 0
+    		function desenhaPontos() {
+    			contexto.fillStyle = "black";
+    			contexto.font = "12pt Monospace";
+    			contexto.fillText(pontos, 5, 20);
+    		}
+
     		var canvas = document.getElementById("canvas");
      		var contexto = canvas.getContext("2d");
 
@@ -80,6 +87,13 @@
 	    	}
 
 	    	var dilminha = new Sprite("dilminha.png", 320, 400);
+	    	dilminha.passou = function() {
+	    		if(this.y <= 0) {
+	    			return true;
+	    		}
+	    		return false;
+	    	}
+
 			var amarelo = new Sprite("carrinho-amarelo.png", -10, 300);     		
      		var azul = new Sprite("carrinho-azul.png", 560, 200); 			
 			var policia = new Sprite("carrinho-policia.png", 10, 100);			
@@ -103,10 +117,15 @@
             			dilminha.move(0, 10);
         				break;
     			}
+
+    			if(dilminha.passou()) {
+    				pontos++;
+    			}
  			}
 
  			setInterval(function(){
 				desenhaFundo();
+				desenhaPontos();
 				dilminha.desenhaImagem();
 				amarelo.desenhaImagem();				
 				azul.desenhaImagem();
